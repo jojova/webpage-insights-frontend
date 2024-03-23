@@ -1,11 +1,11 @@
 import { useState } from "react";
 import FeatureButton from "../components/FeatureButton";
 import aestheticBuildings from "../assets/aesthetic-buildings.png";
-import { FaArrowRight } from "react-icons/fa6";
 import ChatPage from "./ChatPage";
 import AnalyseImagePage from "./AnalyseImagePage";
 import CSVAnalyisPage from "./CSVAnalyisPage";
 import TranscribeVideoPage from "./TranscribeVideoPage";
+import RightArrowButton from "../components/RightArrowButton";
 
 const HomePage = () => {
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
@@ -24,7 +24,9 @@ const HomePage = () => {
           <div className="flex w-full items-center gap-x-4">
             {" "}
             <h2 className="text-4xl font-bold text-[#0A5463]">WPI</h2>
-            <h2 className="text-sm font-medium lg:text-lg">
+            <h2
+              className={`text-sm font-medium lg:text-lg ${selectedFeature ? "hidden" : ""}`}
+            >
               Revolutionize Your Browsing Experience
             </h2>
           </div>
@@ -68,9 +70,7 @@ const HomePage = () => {
               placeholder="WebPage Link"
             />
             {/* Arrow Button */}
-            <div className="flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0B606D] px-4 py-1">
-              <FaArrowRight className="text-white" />
-            </div>
+            <RightArrowButton />
           </div>
         </div>
 
