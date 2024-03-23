@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 
 interface FeatureButtonProps {
   featureLabel: string;
+  isSelected: boolean;
+  onClick: () => void;
 }
 
 const FeatureButton = (props: FeatureButtonProps) => {
@@ -24,7 +26,10 @@ const FeatureButton = (props: FeatureButtonProps) => {
   }, [props.featureLabel]);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-y-2 rounded-lg border-2 border-[#0A5463] px-4 py-2">
+    <div
+      className={`flex cursor-pointer flex-col items-center justify-center gap-y-2 rounded-lg border-2 border-[#0A5463] px-4 py-2 ${props.isSelected === true ? "bg-[#CEEBF1]" : ""}`}
+      onClick={props.onClick}
+    >
       <img
         src={featureImage}
         alt=""
@@ -39,10 +44,13 @@ const FeatureButton = (props: FeatureButtonProps) => {
 
 FeatureButton.propTypes = {
   featureLabel: PropTypes.string.isRequired,
+  isSelected: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 FeatureButton.defaultProps = {
   featubeLabel: "Chat",
+  isSelected: false,
 };
 
 export default FeatureButton;
