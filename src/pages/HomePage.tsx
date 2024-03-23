@@ -17,7 +17,7 @@ const HomePage = () => {
   return (
     <div className="flex w-full">
       <div
-        className={`no-scrollbar flex h-screen ${selectedFeature ? "w-[50%]" : ""} w-screen flex-col items-center justify-between bg-gradient-to-t from-[#ADC8CD] to-[#FFFFFF] to-50%`}
+        className={`no-scrollbar flex h-screen ${selectedFeature ? "w-[40%]" : ""} w-screen flex-col items-center justify-between bg-gradient-to-t from-[#ADC8CD] to-[#FFFFFF] to-50%`}
       >
         {/* Title */}
         <div className="flex w-full items-center justify-between px-[4rem] py-[2rem]">
@@ -36,7 +36,9 @@ const HomePage = () => {
 
         <div className="flex flex-col items-center justify-center gap-y-4 px-4">
           {/* Features Grid */}
-          <div className="grid grid-cols-4 gap-x-2 gap-y-2 lg:gap-x-4">
+          <div
+            className={`grid grid-cols-4 gap-x-2 gap-y-2 lg:gap-x-4 ${selectedFeature ? "grid-cols-2" : ""}`}
+          >
             <FeatureButton
               featureLabel="Chat"
               isSelected={selectedFeature === "Chat"}
