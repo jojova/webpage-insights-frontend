@@ -1,0 +1,109 @@
+/* ChatPage.css */
+
+/* Base styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Container styles */
+  .container {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 1rem;
+  }
+  
+  /* Webpage URL styles */
+  .webpage-url {
+    background-color: rgba(0, 0, 0, 0.1); /* Black with less opacity */
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+  }
+  
+  .webpage-url a {
+    color: #007BFF;
+    text-decoration: none;
+  }
+  
+  .webpage-url a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Summary section styles */
+  .summary {
+    margin-bottom: 1rem;
+  }
+  
+  .summary h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Recommendation section styles */
+  .recommendations {
+    margin-bottom: 1rem;
+  }
+  
+  .recommendations h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Recommendation boxes styles */
+  .recommendation-box {
+    width: calc(50% - 0.5rem); /* Adjust width as needed */
+    background-color: #FFFFFF;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Chat section styles */
+  .chat {
+    margin-top: 2rem; /* Adjust margin as needed */
+  }
+  
+  .chat-box {
+    border: 1px solid #CCCCCC;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    max-height: 300px; /* Adjust max height as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+  .chat-message {
+    margin-bottom: 0.5rem;
+  }
+  
+  .chat-reply {
+    color: #007BFF; /* Change color for bot messages */
+  }
+  
+  .chat-input {
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-field {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #CCCCCC;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+  }
+  
+  .send-button {
+    padding: 0.5rem 1rem;
+    background-color: #007BFF;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+  }
+  
