@@ -90,13 +90,7 @@ body {
     align-items: center;
   }
   
-  .input-field {
-    flex: 1;
-    padding: 0.5rem;
-    border: 1px solid #CCCCCC;
-    border-radius: 0.25rem;
-    margin-right: 0.5rem;
-  }
+  
   
   .send-button {
     padding: 0.5rem 1rem;
