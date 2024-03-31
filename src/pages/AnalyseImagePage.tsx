@@ -1,19 +1,14 @@
 import React from "react";
-import { FaArrowRight } from "react-icons/fa6";
+import ChatBar from "../components/ChatBar";
+import RightArrowButton from "../components/RightArrowButton";
+import { AiOutlinePieChart } from "react-icons/ai";
 
 const AnalyseImagePage = () => {
   return (
-    <div className="w-full bg-[#F0F0F0] p-4">
+    <div className="w-full bg-[#F0F0F0] p-4 flex flex-col justify-between">
       {/* Webpage URL */}
-      <div className="black-box mb-4">
-        <a
-          href="your-webpage-url"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-500 hover:underline"
-        >
-          Your Webpage URL
-        </a>
+      <div className="m-4 rounded-lg bg-[#DCDDDE] py-2 text-center font-medium text-[#62646B]">
+      Webpage URL
       </div>
 
       {/* Summary Section */}
@@ -45,18 +40,13 @@ const AnalyseImagePage = () => {
         <br></br>
 
         {/* Chat input */}
-        <div className="flex w-full gap-x-2">
-          {/* WebPage Link Input Field */}
-          <input
-            type="text"
-            className="w-full border-2 border-[#000000] bg-transparent p-2"
-            placeholder="WebPage Link"
-          />
-          {/* Arrow Button */}
-          <div className="flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0B606D] px-4 py-1">
-            <FaArrowRight className="text-white" />
-          </div>
+        <div className="m-3 flex gap-x-2 py-100">
+        <ChatBar />
+        <RightArrowButton />
+        <div className="flex w-fit cursor-pointer items-center justify-center rounded-lg border-2 border-[#0A5463] bg-[#CEEBF1] px-2 py-1">
+          <AiOutlinePieChart className="h-[24px] w-[24px] text-[#0A5463]" />
         </div>
+      </div>
       </div>
     </div>
   );
