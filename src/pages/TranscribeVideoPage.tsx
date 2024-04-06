@@ -2,7 +2,7 @@ import { useState } from "react";
 import video from "../assets/transcribe-video.png";
 import ChatComponent from "../components/ChatComponent";
 import ChatBar from "../components/ChatBar";
-import RightArrowButton from "../components/RightArrowButton";
+import { FaArrowRight } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 
@@ -70,7 +70,9 @@ const TranscribeVideoPage = () => {
       {/* Chatbar */}
       <div className="m-4 flex gap-x-2 py-2">
         <ChatBar />
-        <RightArrowButton />
+        <div className="flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1">
+          <FaArrowRight className="text-white" />
+        </div>
       </div>
     </div>
   );

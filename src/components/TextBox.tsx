@@ -5,10 +5,10 @@ interface TextBoxProps {
   isSender: boolean;
 }
 
-const TextBox = (props: TextBoxProps) => {
+const TextBox: React.FC<TextBoxProps> = (props) => {
   return (
     <div
-      className={`w-fit max-w-[20rem] rounded-lg px-4 py-2 font-semibold text-[#000000] ${props.isSender ? "self-end bg-[#FFFFFF]" : "bg-[#FFF4CB]"}`}
+      className={`w-fit max-w-[20rem] rounded-lg px-4 py-2 font-medium text-[#000000] ${props.isSender ? "self-end bg-[#FFFFFF]" : "bg-[#FFF4CB]"}`}
     >
       {props.text}
     </div>
