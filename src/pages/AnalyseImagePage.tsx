@@ -10,7 +10,6 @@ const AnalyseImagePage = () => {
       <div className="m-4 rounded-lg bg-[#DCDDDE] py-2 text-center font-medium text-[#62646B]">
       Webpage URL
       </div>
-
       {/* Summary Section */}
       <div className="mb-4">
         <h2 className="mb-2 text-xl font-semibold">Summary</h2>
