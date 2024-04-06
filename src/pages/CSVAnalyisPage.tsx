@@ -1,4 +1,4 @@
-import RightArrowButton from "../components/RightArrowButton";
+import { FaArrowRight } from "react-icons/fa6";
 import ChatBar from "../components/ChatBar";
 import ChatComponent from "../components/ChatComponent";
 import { AiOutlinePieChart } from "react-icons/ai";
@@ -17,7 +17,9 @@ const CSVAnalyisPage = () => {
       {/* Chatbar */}
       <div className="m-4 flex gap-x-2 py-2">
         <ChatBar />
-        <RightArrowButton />
+        <div className="flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1">
+          <FaArrowRight className="text-white" />
+        </div>
         <div className="flex w-fit cursor-pointer items-center justify-center rounded-lg border-2 border-[#0A5463] bg-[#CEEBF1] px-2 py-1">
           <AiOutlinePieChart className="h-[24px] w-[24px] text-[#0A5463]" />
         </div>
