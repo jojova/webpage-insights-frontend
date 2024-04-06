@@ -11,6 +11,7 @@ const TranscribeVideoPage: React.FC = () => {
 
   const url_rec = "https://www.youtube.com/watch?v=zhWDdy_5v2w";
   const encodedUrl = encodeURIComponent(url_rec);
+  const video_id = url_rec.split("=")[1];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +48,7 @@ const TranscribeVideoPage: React.FC = () => {
       <div className="m-4 flex flex-col gap-y-2">
         <h2 className="font-semibold">Transcribe Video</h2>
         <div className="flex h-fit w-fit cursor-pointer items-center justify-center rounded-lg bg-[#FFFFFF] p-[64px]">
-          <img src={video} alt="" className="h-[32px] w-[32px]" />
+          <img src={`http://img.youtube.com/vi/${video_id}/0.jpg`} alt="Thumbnail" className="h-[300px] w-[300px]" />
         </div>
       </div>
 
