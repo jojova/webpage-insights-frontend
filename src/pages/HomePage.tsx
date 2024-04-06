@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import axios from "axios";
 import FeatureButton from "../components/FeatureButton";
 import aestheticBuildings from "../assets/aesthetic-buildings.png";
 import ChatPage from "./ChatPage";
@@ -10,6 +11,8 @@ import { FaArrowRight } from "react-icons/fa6";
 const HomePage = () => {
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
   const [webpageURL, setWebpageURL] = useState<string>("");
+  const [transcriptionData, setTranscriptionData] = useState("");
+  const [summaryData, setSummaryData] = useState("");
 
   const handleFeatureClick = (featureLabel: string) => {
     setSelectedFeature(featureLabel === selectedFeature ? null : featureLabel);
@@ -18,6 +21,34 @@ const HomePage = () => {
   const handleURLChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setWebpageURL(event.target.value);
   };
+
+  const fetchTranscriptionData = useCallback(async () => {
+    if (selectedFeature === "Transcribe Video" && webpageURL !== "") {
+      try {
+        const encodedUrl = encodeURIComponent(webpageURL);
+        // Fetch transcription data
+        const response1 = await axios.post(
+          `http://127.0.0.1:8000/summarize/youtube/text/?url=${encodedUrl}`,
+          {},
+        );
+        const data1 = response1.data;
+        setTranscriptionData(data1.response[0]);
+
+        // Fetch summarized data using the transcription
+        const encodedTranscription = encodeURIComponent(data1.response[0]);
+        const response2 = await axios.post(
+          `http://127.0.0.1:8000/summarize/text/?text=${encodedTranscription}`,
+          {},
+        );
+        const data2 = response2.data;
+        setSummaryData(data2.response);
+      } catch (error) {
+        setTranscriptionData("Invalid YouTube URL!");
+        setSummaryData("Invalid Transcript!");
+        console.error("Error fetching data:", error);
+      }
+    }
+  }, [selectedFeature, webpageURL]);
 
   return (
     <div className="flex w-full">
@@ -89,7 +120,13 @@ const HomePage = () => {
             {/* Arrow Button */}
             <div
               onClick={() => {
-                if (webpageURL !== "") handleFeatureClick("Chat");
+                if (webpageURL !== "") {
+                  if (selectedFeature === "Transcribe Video") {
+                    setTranscriptionData("");
+                    setSummaryData("");
+                    fetchTranscriptionData();
+                  }
+                }
               }}
               className="flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1"
             >
@@ -109,7 +146,10 @@ const HomePage = () => {
       ) : selectedFeature === "CSV Analysis" ? (
         <CSVAnalyisPage />
       ) : selectedFeature === "Transcribe Video" ? (
-        <TranscribeVideoPage />
+        <TranscribeVideoPage
+          transcriptionData={transcriptionData}
+          summaryData={summaryData}
+        />
       ) : (
         ""
       )}
