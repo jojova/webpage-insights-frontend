@@ -1,16 +1,45 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import video from "../assets/transcribe-video.png";
-import ChatComponent from "../components/ChatComponent";
-import ChatBar from "../components/ChatBar";
-import RightArrowButton from "../components/RightArrowButton";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 
-const TranscribeVideoPage = () => {
-  const [isTranscriptionVisible, setIsTranscriptionVisible] =
-    useState<boolean>(true);
+const TranscribeVideoPage: React.FC = () => {
+  const [isTranscriptionVisible, setIsTranscriptionVisible] = useState(true);
+  const [transcriptionData, setTranscriptionData] = useState("");
+  const [summaryData, setSummaryData] = useState("");
 
-  const [isSummaryVisible, setIsSummaryVisible] = useState<boolean>(true);
+  const url_rec = "https://www.youtube.com/watch?v=zhWDdy_5v2w";
+  const encodedUrl = encodeURIComponent(url_rec);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch transcription data
+        const response1 = await axios.post(
+          `http://127.0.0.1:8000/summarize/youtube/text/?url=${encodedUrl}`,
+          {}
+        );
+        const data1 = await response1.data;
+        setTranscriptionData(data1.response[0]);
+
+        // Encode transcription data for the next request
+        const encodedTranscription = encodeURIComponent(data1.response[0]);
+
+        // Fetch summarized data using the encoded transcription
+        const response2 = await axios.post(
+          `http://127.0.0.1:8000/summarize/text/?text=${encodedTranscription}`,
+          {}
+        );
+        const data2 = await response2.data;
+        setSummaryData(data2.response);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [encodedUrl]);
 
   return (
     <div className="flex h-screen w-full flex-col justify-between overflow-x-hidden bg-[#F0F0F0]">
@@ -22,6 +51,14 @@ const TranscribeVideoPage = () => {
         </div>
       </div>
 
+      {/* Summary */}
+      <div className="m-4 flex flex-col gap-y-2">
+        <h2 className="font-semibold">Summary</h2>
+        <p className="text-justify">
+          {summaryData || "Loading summary..."}
+        </p>
+      </div>
+
       {/* Transcription */}
       <div className="m-4 flex flex-col gap-y-2">
         <div
@@ -31,47 +68,12 @@ const TranscribeVideoPage = () => {
           <h2 className="font-semibold">Transcription</h2>
           {isTranscriptionVisible ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
-        <h2
-          className={`text-justify ${isTranscriptionVisible ? "" : "hidden"}`}
-        >
-          This passage provides a brief biography of Steven Paul Jobs,
-          highlighting key aspects of his life and contributions to the
-          technology industry. Born in 1955, Jobs co-founded Apple Inc.
-          alongside Steve Wozniak, playing a pivotal role in the personal
-          computer revolution of the 1970s and 1980s.{" "}
+        <h2 className={`text-justify ${isTranscriptionVisible ? "" : "hidden"}`}>
+          {transcriptionData || "Loading transcription..."}
         </h2>
       </div>
-
-      {/* Summary */}
-      <div className="m-4 flex flex-col gap-y-2">
-        <div
-          className="flex cursor-pointer items-center justify-between"
-          onClick={() => setIsSummaryVisible(!isSummaryVisible)}
-        >
-          <h2 className="font-semibold">Summary</h2>
-          {isSummaryVisible ? <IoIosArrowUp /> : <IoIosArrowDown />}
-        </div>
-        <h2 className={`text-justify ${isSummaryVisible ? "" : "hidden"}`}>
-          This passage provides a brief biography of Steven Paul Jobs,
-          highlighting key aspects of his life and contributions to the
-          technology industry. Born in 1955, Jobs co-founded Apple Inc.
-          alongside Steve Wozniak, playing a pivotal role in the personal
-          computer revolution of the 1970s and 1980s.{" "}
-        </h2>
-      </div>
-
-      <div className="m-2">
-        <hr className="my-8 h-px border-0 bg-[#BEBEBE]" />
-      </div>
-
-      {/* Chat */}
-      <ChatComponent />
-
-      {/* Chatbar */}
-      <div className="m-4 flex gap-x-2 py-2">
-        <ChatBar />
-        <RightArrowButton />
-      </div>
+      
+      {/* Add chat components here.. */}
     </div>
   );
 };
