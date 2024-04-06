@@ -1,25 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface ChatBarProps {
   onTextChange: (newQuestion: string) => void;
+  resetTrigger: boolean;
+  sendRequest: () => void;
 }
 
 const ChatBar = (props: ChatBarProps) => {
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
+    const newValue = event.target.value;
+    setInputValue(newValue);
+    props.onTextChange(newValue); // Update currentQuestion on each change
   };
 
   const handleEnterKeyPress = (
     event: React.KeyboardEvent<HTMLInputElement>,
   ) => {
     if (event.key === "Enter") {
-      // Call the function passed from the parent component to update the question state
-      props.onTextChange(inputValue);
-      setInputValue(""); // Clear the input after updating the question
+      // Call sendRequest prop directly
+      props.sendRequest();
+      setInputValue(""); // Ensure the input is cleared
     }
   };
+
+  useEffect(() => {
+    // Reset input value when resetTrigger changes
+    setInputValue("");
+  }, [props.resetTrigger]);
 
   return (
     <input

@@ -30,7 +30,11 @@ const HomePage = () => {
         <div className="flex w-full items-center justify-between px-[4rem] py-[2rem]">
           <div className="flex w-full items-center gap-x-4">
             {" "}
-            <h2 className="text-4xl font-bold text-[#0A5463]">WPI</h2>
+            <div className="cursor-pointer">
+              <h2 className="pointer-events-none text-4xl font-bold text-[#0A5463]">
+                WPI
+              </h2>
+            </div>
             <h2
               className={`text-sm font-medium lg:text-lg ${
                 selectedFeature ? "hidden" : ""
