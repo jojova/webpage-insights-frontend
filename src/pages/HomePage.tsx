@@ -5,27 +5,40 @@ import ChatPage from "./ChatPage";
 import AnalyseImagePage from "./AnalyseImagePage";
 import CSVAnalyisPage from "./CSVAnalyisPage";
 import TranscribeVideoPage from "./TranscribeVideoPage";
-import RightArrowButton from "../components/RightArrowButton";
+import { FaArrowRight } from "react-icons/fa6";
 
 const HomePage = () => {
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
+  const [webpageURL, setWebpageURL] = useState<string>("");
 
   const handleFeatureClick = (featureLabel: string) => {
     setSelectedFeature(featureLabel === selectedFeature ? null : featureLabel);
   };
 
+  const handleURLChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setWebpageURL(event.target.value);
+  };
+
   return (
     <div className="flex w-full">
       <div
-        className={`no-scrollbar flex h-screen ${selectedFeature ? "w-[40%]" : ""} w-screen flex-col items-center justify-between bg-gradient-to-t from-[#ADC8CD] to-[#FFFFFF] to-50%`}
+        className={`no-scrollbar flex h-screen ${
+          selectedFeature ? "w-[40%]" : ""
+        } w-screen flex-col items-center justify-between bg-gradient-to-t from-[#ADC8CD] to-[#FFFFFF] to-50%`}
       >
         {/* Title */}
         <div className="flex w-full items-center justify-between px-[4rem] py-[2rem]">
           <div className="flex w-full items-center gap-x-4">
             {" "}
-            <h2 className="text-4xl font-bold text-[#0A5463]">WPI</h2>
+            <div className="cursor-pointer">
+              <h2 className="pointer-events-none text-4xl font-bold text-[#0A5463]">
+                WPI
+              </h2>
+            </div>
             <h2
-              className={`text-sm font-medium lg:text-lg ${selectedFeature ? "hidden" : ""}`}
+              className={`text-sm font-medium lg:text-lg ${
+                selectedFeature ? "hidden" : ""
+              }`}
             >
               Revolutionize Your Browsing Experience
             </h2>
@@ -39,7 +52,9 @@ const HomePage = () => {
         <div className="flex flex-col items-center justify-center gap-y-4 px-4">
           {/* Features Grid */}
           <div
-            className={`grid grid-cols-4 gap-x-2 gap-y-2 lg:gap-x-4 ${selectedFeature ? "grid-cols-2" : ""}`}
+            className={`grid grid-cols-4 gap-x-2 gap-y-2 lg:gap-x-4 ${
+              selectedFeature ? "grid-cols-2" : ""
+            }`}
           >
             <FeatureButton
               featureLabel="Chat"
@@ -68,9 +83,18 @@ const HomePage = () => {
               type="text"
               className="w-full border-2 border-[#000000] bg-transparent p-2"
               placeholder="WebPage Link"
+              value={webpageURL}
+              onChange={handleURLChange}
             />
             {/* Arrow Button */}
-            <RightArrowButton />
+            <div
+              onClick={() => {
+                if (webpageURL !== "") handleFeatureClick("Chat");
+              }}
+              className="flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1"
+            >
+              <FaArrowRight className="text-white" />
+            </div>
           </div>
         </div>
 
@@ -79,7 +103,7 @@ const HomePage = () => {
       </div>
 
       {selectedFeature === "Chat" ? (
-        <ChatPage />
+        <ChatPage webpageURL={webpageURL} />
       ) : selectedFeature === "Analyse Image" ? (
         <AnalyseImagePage />
       ) : selectedFeature === "CSV Analysis" ? (

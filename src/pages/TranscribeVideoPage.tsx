@@ -18,7 +18,7 @@ const TranscribeVideoPage: React.FC = () => {
         // Fetch transcription data
         const response1 = await axios.post(
           `http://127.0.0.1:8000/summarize/youtube/text/?url=${encodedUrl}`,
-          {}
+          {},
         );
         const data1 = await response1.data;
         setTranscriptionData(data1.response[0]);
@@ -29,7 +29,7 @@ const TranscribeVideoPage: React.FC = () => {
         // Fetch summarized data using the encoded transcription
         const response2 = await axios.post(
           `http://127.0.0.1:8000/summarize/text/?text=${encodedTranscription}`,
-          {}
+          {},
         );
         const data2 = await response2.data;
         setSummaryData(data2.response);
@@ -54,9 +54,7 @@ const TranscribeVideoPage: React.FC = () => {
       {/* Summary */}
       <div className="m-4 flex flex-col gap-y-2">
         <h2 className="font-semibold">Summary</h2>
-        <p className="text-justify">
-          {summaryData || "Loading summary..."}
-        </p>
+        <p className="text-justify">{summaryData || "Loading summary..."}</p>
       </div>
 
       {/* Transcription */}
@@ -68,11 +66,13 @@ const TranscribeVideoPage: React.FC = () => {
           <h2 className="font-semibold">Transcription</h2>
           {isTranscriptionVisible ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
-        <h2 className={`text-justify ${isTranscriptionVisible ? "" : "hidden"}`}>
+        <h2
+          className={`text-justify ${isTranscriptionVisible ? "" : "hidden"}`}
+        >
           {transcriptionData || "Loading transcription..."}
         </h2>
       </div>
-      
+
       {/* Add chat components here.. */}
     </div>
   );

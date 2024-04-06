@@ -1,14 +1,13 @@
-import React from "react";
 import ChatBar from "../components/ChatBar";
-import RightArrowButton from "../components/RightArrowButton";
+import { FaArrowRight } from "react-icons/fa6";
 import { AiOutlinePieChart } from "react-icons/ai";
 
 const AnalyseImagePage = () => {
   return (
-    <div className="w-full bg-[#F0F0F0] p-4 flex flex-col justify-between">
+    <div className="flex w-full flex-col justify-between bg-[#F0F0F0] p-4">
       {/* Webpage URL */}
       <div className="m-4 rounded-lg bg-[#DCDDDE] py-2 text-center font-medium text-[#62646B]">
-      Webpage URL
+        Webpage URL
       </div>
       {/* Summary Section */}
       <div className="mb-4">
@@ -39,13 +38,15 @@ const AnalyseImagePage = () => {
         <br></br>
 
         {/* Chat input */}
-        <div className="m-3 flex gap-x-2 py-100">
-        <ChatBar />
-        <RightArrowButton />
-        <div className="flex w-fit cursor-pointer items-center justify-center rounded-lg border-2 border-[#0A5463] bg-[#CEEBF1] px-2 py-1">
-          <AiOutlinePieChart className="h-[24px] w-[24px] text-[#0A5463]" />
+        <div className="py-100 m-3 flex gap-x-2">
+          <ChatBar />
+          <div className="flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1">
+            <FaArrowRight className="text-white" />
+          </div>
+          <div className="flex w-fit cursor-pointer items-center justify-center rounded-lg border-2 border-[#0A5463] bg-[#CEEBF1] px-2 py-1">
+            <AiOutlinePieChart className="h-[24px] w-[24px] text-[#0A5463]" />
+          </div>
         </div>
-      </div>
       </div>
     </div>
   );
