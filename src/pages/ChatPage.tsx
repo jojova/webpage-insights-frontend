@@ -68,11 +68,13 @@ const ChatPage: React.FC<ChatPageProps> = ({ webpageURL }) => {
       <div className="m-4 rounded-lg bg-[#DCDDDE] py-2 text-center font-medium text-[#62646B]">
         {webpageURL ? webpageURL : "No WebPage Link Found"}
       </div>
+
       {/* Summary Section */}
       <div className="mb-4">
         <h2 className="mb-2 text-xl font-semibold">Summary</h2>
         <p>Your summary text goes here...</p>
       </div>
+
       <h2 className="mb-2 text-xl font-semibold">Chat</h2>
       <div className="m-4 flex flex-col gap-y-4">
         {/* Displaying history of questions and responses */}
@@ -84,6 +86,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ webpageURL }) => {
           />
         ))}
       </div>
+
       {/* Chat Section */}
       <div>
         <div className="py-100 m-3 flex gap-x-2">
