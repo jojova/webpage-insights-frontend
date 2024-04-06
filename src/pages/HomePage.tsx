@@ -25,6 +25,8 @@ const HomePage = () => {
   const fetchTranscriptionData = useCallback(async () => {
     if (selectedFeature === "Transcribe Video" && webpageURL !== "") {
       try {
+        setTranscriptionData("Loading Transcription...");
+        setSummaryData("Loading Summary...");
         const encodedUrl = encodeURIComponent(webpageURL);
         // Fetch transcription data
         const response1 = await axios.post(
@@ -120,12 +122,10 @@ const HomePage = () => {
             {/* Arrow Button */}
             <div
               onClick={() => {
-                if (webpageURL !== "") {
-                  if (selectedFeature === "Transcribe Video") {
-                    setTranscriptionData("");
-                    setSummaryData("");
-                    fetchTranscriptionData();
-                  }
+                if (selectedFeature === "Transcribe Video") {
+                  setTranscriptionData("");
+                  setSummaryData("");
+                  fetchTranscriptionData();
                 }
               }}
               className="flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1"

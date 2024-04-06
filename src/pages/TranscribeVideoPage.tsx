@@ -27,7 +27,9 @@ const TranscribeVideoPage: React.FC<TranscribeVideoPageProps> = ({
       {/* Summary */}
       <div className="m-4 flex flex-col gap-y-2">
         <h2 className="font-semibold">Summary</h2>
-        <p className="text-justify">{summaryData || "Loading summary..."}</p>
+        <p className="text-justify">
+          {summaryData || "Please enter a valid YouTube URL"}
+        </p>
       </div>
 
       {/* Transcription */}
@@ -42,7 +44,7 @@ const TranscribeVideoPage: React.FC<TranscribeVideoPageProps> = ({
         <h2
           className={`text-justify ${isTranscriptionVisible ? "" : "hidden"}`}
         >
-          {transcriptionData || "Loading transcription..."}
+          {transcriptionData || "Please enter a valid YouTube URL"}
         </h2>
       </div>
 
