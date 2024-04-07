@@ -101,7 +101,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ webpageURL }) => {
           </div>
           <div
             title="Clear Context"
-            className="flex w-fit cursor-pointer items-center justify-center rounded-lg border-2 border-[#0A5463] bg-[#CEEBF1] px-2 py-1"
+            className="flex w-fit cursor-pointer items-center justify-center rounded-lg border-2 border-[#0A5463] bg-[#CEEBF1] p-2"
           >
             <GiMagicBroom className="h-[24px] w-[24px] text-[#0A5463]" />
           </div>

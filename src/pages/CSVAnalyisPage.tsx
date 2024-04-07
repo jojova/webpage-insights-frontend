@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaArrowRight, FaFileCsv, FaFileCircleCheck } from "react-icons/fa6";
 import ChatBar from "../components/ChatBar";
 import TextBox from "../components/TextBox";
+import { MdAutoGraph } from "react-icons/md";
 
 interface Message {
   text: string;
@@ -14,6 +15,7 @@ const CSVAnalysisPage: React.FC = () => {
   const [history, setHistory] = useState<Message[]>([]);
   const [currentQuery, setCurrentQuery] = useState("");
   const [resetInputTrigger, setResetInputTrigger] = useState(false);
+  const [isChartEndpoint, setIsChartEndpoint] = useState(false);
 
   const sendRequest = async () => {
     if (!selectedFile || !currentQuery.trim()) {
@@ -29,7 +31,7 @@ const CSVAnalysisPage: React.FC = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/csv/chart/?query=${queryString}`,
+        `http://localhost:8000/csv/${isChartEndpoint ? "chart" : "query"}/?query=${queryString}`,
         formData, // Now only includes the file
         { headers: { "Content-Type": "multipart/form-data" } },
       );
@@ -84,7 +86,7 @@ const CSVAnalysisPage: React.FC = () => {
         ))}
       </div>
 
-      <div className="m-4 flex gap-x-2 py-2">
+      <div className="m-4 flex gap-x-2">
         <input
           type="file"
           accept=".csv"
@@ -97,13 +99,29 @@ const CSVAnalysisPage: React.FC = () => {
           title={
             selectedFile ? `Uploaded '${selectedFile.name}'` : "Upload CSV File"
           }
-          className={`flex h-full w-fit cursor-pointer items-center justify-center rounded-lg px-3 py-1 ${selectedFile ? "bg-[#CEEBF1]" : "bg-[#0A5463]"}`}
+          className={`flex h-full w-fit cursor-pointer items-center justify-center rounded-lg px-3 py-1 ${selectedFile ? "bg-[#0A5463]" : "bg-[#CEEBF1]"}`}
         >
           {selectedFile ? (
-            <FaFileCircleCheck className="text-[#0A5463]" />
+            <FaFileCircleCheck className="text-white" />
           ) : (
-            <FaFileCsv className="text-white" />
+            <FaFileCsv className="text-xl text-[#0A5463]" />
           )}
+        </div>
+
+        <div onClick={sendRequest}>
+          <div
+            title={
+              isChartEndpoint
+                ? "Click to disable Graph Mode"
+                : "Click to enable Graph Mode"
+            }
+            onClick={() => setIsChartEndpoint(!isChartEndpoint)}
+            className={`flex h-full w-full cursor-pointer items-center justify-center rounded-lg ${isChartEndpoint ? "bg-[#0A5463]" : "bg-[#CEEBF1]"} px-3 py-1`}
+          >
+            <MdAutoGraph
+              className={`text-xl ${isChartEndpoint ? "text-white" : "text-[#0A5463]"} `}
+            />
+          </div>
         </div>
 
         <ChatBar
