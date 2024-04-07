@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import FeatureButton from "../components/FeatureButton";
 import aestheticBuildings from "../assets/aesthetic-buildings.png";
@@ -16,6 +16,7 @@ const HomePage = () => {
   const [transcriptionData, setTranscriptionData] = useState("");
   const [summaryData, setSummaryData] = useState("");
   const [chatSummaryText, setChatSummaryText] = useState("");
+  const [imagesURLs, setImageURLs] = useState([]); // Initialize images state
 
   const handleFeatureClick = (featureLabel: string) => {
     setWebpageURL("");
@@ -114,6 +115,41 @@ const HomePage = () => {
     };
   }, [webpageURL]);
 
+  const fetchImagesFromBackend = async (webpageURL: string) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/scrape/image/?url=${encodeURIComponent(webpageURL)}`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+          },
+          body: JSON.stringify({}), // No need to include the URL in the body
+        },
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch images");
+      }
+      const responseData = await response.json();
+      console.log("Data ==>> ", responseData);
+
+      // Check if responseData has a 'response' property containing an array
+      if (responseData && Array.isArray(responseData.response)) {
+        const filteredData = responseData.response.filter((url: string) =>
+          url.startsWith("http"),
+        );
+        // Update state with fetched images
+        setImageURLs(filteredData);
+      } else {
+        throw new Error(
+          "Invalid response format or missing 'response' property",
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching images:", error);
+    }
+  };
+
   return (
     <div className="flex w-full">
       <div
@@ -124,7 +160,6 @@ const HomePage = () => {
         {/* Title */}
         <div className="flex w-full items-center justify-between px-[4rem] py-[2rem]">
           <div className="flex w-full items-center gap-x-4">
-            {" "}
             <div
               onClick={() => {
                 setSelectedFeature("");
@@ -179,7 +214,9 @@ const HomePage = () => {
             />
           </div>
           <div
-            className={`flex w-full gap-x-2 ${selectedFeature === "CSV Analysis" ? "invisible" : ""}`}
+            className={`flex w-full gap-x-2 ${
+              selectedFeature === "CSV Analysis" ? "invisible" : ""
+            }`}
           >
             {/* WebPage Link Input Field */}
             <input
@@ -219,7 +256,7 @@ const HomePage = () => {
               </div>
             ) : selectedFeature === "Analyse Image" ? (
               <div
-                onClick={() => {}}
+                onClick={() => fetchImagesFromBackend(webpageURL)}
                 title="Analyse Image"
                 className={`flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1`}
               >
@@ -240,10 +277,11 @@ const HomePage = () => {
         />
       </div>
 
+      {/* Render selected feature */}
       {selectedFeature === "Chat" ? (
         <ChatPage webpageURL={webpageURL} summaryData={chatSummaryText} />
       ) : selectedFeature === "Analyse Image" ? (
-        <AnalyseImagePage />
+        <AnalyseImagePage imageURLs={imagesURLs} />
       ) : selectedFeature === "CSV Analysis" ? (
         <CSVAnalyisPage />
       ) : selectedFeature === "Transcribe Video" ? (
