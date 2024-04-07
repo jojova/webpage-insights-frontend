@@ -37,12 +37,15 @@ const TranscribeVideoPage: React.FC<TranscribeVideoPageProps> = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        question: question,
+        query: question,
+        paragraph: props.transcriptionData,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         // Check if data.response.result is available
+        console.log(`output`);
+        console.log(data);
         const result = data.response && data.response.result ? data.response.result : "No result found";
         
         // Update the history with the new question and response
@@ -57,8 +60,8 @@ const TranscribeVideoPage: React.FC<TranscribeVideoPageProps> = (props) => {
         console.log("History ==>> ", history);
       })
       .catch((error) => console.error("Error fetching response:", error));
-  };
-  
+};
+
 
   const handleQuestionChange = (newQuestion: string) => {
     setCurrentQuestion(newQuestion);
