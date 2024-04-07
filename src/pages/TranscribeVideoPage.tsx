@@ -37,7 +37,7 @@ const TranscribeVideoPage = (props: TranscribeVideoPageProps) => {
           {isSummaryVisible ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         <p className={`text-justify ${isSummaryVisible ? "" : "hidden"}`}>
-          {props.summaryData || "Loading summary..."}
+          {props.summaryData || ""}
         </p>
       </div>
 
@@ -51,7 +51,7 @@ const TranscribeVideoPage = (props: TranscribeVideoPageProps) => {
           {isTranscriptionVisible ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         <p className={`text-justify ${isTranscriptionVisible ? "" : "hidden"}`}>
-          {props.transcriptionData || "Loading transcription..."}
+          {props.transcriptionData || ""}
         </p>
       </div>
 

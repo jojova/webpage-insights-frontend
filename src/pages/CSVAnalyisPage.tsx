@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from "react";
 import axios from "axios";
-import { FaArrowRight } from "react-icons/fa6";
+import { FaArrowRight, FaFileCsv, FaFileCircleCheck } from "react-icons/fa6";
 import ChatBar from "../components/ChatBar";
 import TextBox from "../components/TextBox";
 
@@ -85,12 +85,6 @@ const CSVAnalysisPage: React.FC = () => {
       </div>
 
       <div className="m-4 flex gap-x-2 py-2">
-        <div onClick={sendRequest}>
-          <div className="flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1">
-            <FaArrowRight className="text-white" />
-          </div>
-        </div>
-
         <input
           type="file"
           accept=".csv"
@@ -98,15 +92,34 @@ const CSVAnalysisPage: React.FC = () => {
           className="hidden"
           id="fileInput"
         />
-        <label htmlFor="fileInput" className="cursor-pointer">
-          Select CSV File
-        </label>
+        <div
+          onClick={() => document.getElementById("fileInput")?.click()}
+          title={
+            selectedFile ? `Uploaded '${selectedFile.name}'` : "Upload CSV File"
+          }
+          className={`flex h-full w-fit cursor-pointer items-center justify-center rounded-lg px-3 py-1 ${selectedFile ? "bg-[#CEEBF1]" : "bg-[#0A5463]"}`}
+        >
+          {selectedFile ? (
+            <FaFileCircleCheck className="text-[#0A5463]" />
+          ) : (
+            <FaFileCsv className="text-white" />
+          )}
+        </div>
 
         <ChatBar
           onTextChange={handleQueryChange}
           resetTrigger={resetInputTrigger}
           sendRequest={sendRequest}
         />
+
+        <div onClick={sendRequest}>
+          <div
+            title="Send Request"
+            className="flex h-full w-full cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1"
+          >
+            <FaArrowRight className="text-white" />
+          </div>
+        </div>
       </div>
     </div>
   );
