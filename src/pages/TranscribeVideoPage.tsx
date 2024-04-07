@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
-import { AiOutlinePieChart } from "react-icons/ai";
+import { GiMagicBroom } from "react-icons/gi";
 import ChatBar from "../components/ChatBar";
 import TextBox from "../components/TextBox";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
@@ -148,8 +148,11 @@ const TranscribeVideoPage: React.FC<TranscribeVideoPageProps> = (props) => {
           >
             <FaArrowRight className="text-white" />
           </div>
-          <div className="flex w-fit cursor-pointer items-center justify-center rounded-lg border-2 border-[#0A5463] bg-[#CEEBF1] p-2">
-            <AiOutlinePieChart className="h-[24px] w-[24px] text-[#0A5463]" />
+          <div
+            title="Clear Context"
+            className="flex w-fit cursor-pointer items-center justify-center rounded-lg border-2 border-[#0A5463] bg-[#CEEBF1] p-2"
+          >
+            <GiMagicBroom className="h-[24px] w-[24px] text-[#0A5463]" />
           </div>
         </div>
       </div>

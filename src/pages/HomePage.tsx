@@ -16,7 +16,7 @@ const HomePage = () => {
 
   const handleFeatureClick = (featureLabel: string) => {
     setWebpageURL("");
-    setSelectedFeature(featureLabel === selectedFeature ? null : featureLabel);
+    setSelectedFeature(featureLabel);
   };
 
   const handleURLChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +71,15 @@ const HomePage = () => {
         <div className="flex w-full items-center justify-between px-[4rem] py-[2rem]">
           <div className="flex w-full items-center gap-x-4">
             {" "}
-            <div className="cursor-pointer">
+            <div
+              onClick={() => {
+                setSelectedFeature("");
+                setWebpageURL("");
+                setSummaryData("");
+                setTranscriptionData("");
+              }}
+              className="cursor-pointer"
+            >
               <h2 className="pointer-events-none text-4xl font-bold text-[#0A5463]">
                 WPI
               </h2>

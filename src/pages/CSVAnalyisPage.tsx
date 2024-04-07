@@ -4,6 +4,7 @@ import { FaArrowRight, FaFileCsv, FaFileCircleCheck } from "react-icons/fa6";
 import ChatBar from "../components/ChatBar";
 import TextBox from "../components/TextBox";
 import { MdAutoGraph } from "react-icons/md";
+import { GiMagicBroom } from "react-icons/gi";
 
 interface Message {
   text: string;
@@ -86,7 +87,7 @@ const CSVAnalysisPage: React.FC = () => {
         ))}
       </div>
 
-      <div className="m-4 flex gap-x-2">
+      <div className="m-3 flex gap-x-2">
         <input
           type="file"
           accept=".csv"
@@ -137,6 +138,13 @@ const CSVAnalysisPage: React.FC = () => {
           >
             <FaArrowRight className="text-white" />
           </div>
+        </div>
+
+        <div
+          title="Clear Context"
+          className="flex w-fit cursor-pointer items-center justify-center rounded-lg border-2 border-[#0A5463] bg-[#CEEBF1] p-2"
+        >
+          <GiMagicBroom className="h-[24px] w-[24px] text-[#0A5463]" />
         </div>
       </div>
     </div>
