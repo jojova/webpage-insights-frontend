@@ -82,7 +82,7 @@ const TranscribeVideoPage: React.FC<TranscribeVideoPageProps> = (props) => {
   }, [props.videoURL]);
 
   return (
-    <div className="flex h-screen w-full flex-col justify-between overflow-x-hidden bg-[#F0F0F0]">
+    <div className="flex h-screen w-full flex-col justify-between overflow-x-hidden bg-[#F0F0F0] p-4">
       {/* Transcribe Video Heading and Thumbnail */}
       <div className="m-4 flex flex-col gap-y-2">
         <h2 className="font-semibold">Transcribe Video</h2>
@@ -136,7 +136,7 @@ const TranscribeVideoPage: React.FC<TranscribeVideoPageProps> = (props) => {
 
       {/* Chat Section */}
       <div>
-        <div className="m-3 flex gap-x-2 py-3">
+        <div className="m-3 flex gap-x-2">
           <ChatBar
             resetTrigger={resetInputTrigger}
             onTextChange={handleQuestionChange}
@@ -148,7 +148,7 @@ const TranscribeVideoPage: React.FC<TranscribeVideoPageProps> = (props) => {
           >
             <FaArrowRight className="text-white" />
           </div>
-          <div className="flex w-fit cursor-pointer items-center justify-center rounded-lg border-2 border-[#0A5463] bg-[#CEEBF1] px-2 py-1">
+          <div className="flex w-fit cursor-pointer items-center justify-center rounded-lg border-2 border-[#0A5463] bg-[#CEEBF1] p-2">
             <AiOutlinePieChart className="h-[24px] w-[24px] text-[#0A5463]" />
           </div>
         </div>

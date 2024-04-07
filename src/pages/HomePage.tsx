@@ -6,7 +6,7 @@ import ChatPage from "./ChatPage";
 import AnalyseImagePage from "./AnalyseImagePage";
 import CSVAnalyisPage from "./CSVAnalyisPage";
 import TranscribeVideoPage from "./TranscribeVideoPage";
-import { FaArrowRight } from "react-icons/fa6";
+import { CgTranscript } from "react-icons/cg";
 
 const HomePage = () => {
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
@@ -119,13 +119,17 @@ const HomePage = () => {
             />
           </div>
           <div
-            className={`flex w-full gap-x-2 ${selectedFeature === "CSV Analysis" ? "hidden" : ""}`}
+            className={`flex w-full gap-x-2 ${selectedFeature === "CSV Analysis" ? "invisible" : ""}`}
           >
             {/* WebPage Link Input Field */}
             <input
               type="text"
               className="w-full border-2 border-[#000000] bg-transparent p-2"
-              placeholder="WebPage Link"
+              placeholder={
+                selectedFeature === "Transcribe Video"
+                  ? "YouTube Video Link"
+                  : "WebPage Link"
+              }
               value={webpageURL}
               onChange={handleURLChange}
             />
@@ -138,10 +142,10 @@ const HomePage = () => {
                   fetchTranscriptionData();
                 }
               }}
-              title="Send Request"
+              title="Transcribe Video"
               className={`flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1 ${selectedFeature === "Transcribe Video" ? "" : "hidden"}`}
             >
-              <FaArrowRight className="text-white" />
+              <CgTranscript className="text-white" />
             </div>
           </div>
         </div>
