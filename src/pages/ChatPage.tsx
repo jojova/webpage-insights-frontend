@@ -4,9 +4,11 @@ import { GiMagicBroom } from "react-icons/gi";
 import ChatBar from "../components/ChatBar";
 import TextBox from "../components/TextBox";
 import "./ChatPage.css";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 interface ChatPageProps {
   webpageURL: string;
+  summaryData: string;
 }
 
 interface Message {
@@ -14,10 +16,11 @@ interface Message {
   isSender: boolean;
 }
 
-const ChatPage: React.FC<ChatPageProps> = ({ webpageURL }) => {
+const ChatPage: React.FC<ChatPageProps> = (props: ChatPageProps) => {
   const [history, setHistory] = useState<Message[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState("");
   const [resetInputTrigger, setResetInputTrigger] = useState(false);
+  const [isSummaryVisible, setIsSummaryVisible] = useState(true);
 
   const sendRequest = (question = currentQuestion) => {
     // Only send request if question is not empty
@@ -30,7 +33,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ webpageURL }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        url: webpageURL,
+        url: props.webpageURL,
         question: question,
       }),
     })
@@ -57,23 +60,31 @@ const ChatPage: React.FC<ChatPageProps> = ({ webpageURL }) => {
       setHistory([]);
       setCurrentQuestion("");
     };
-  }, [webpageURL]);
+  }, [props.webpageURL]);
 
   return (
     <div className="flex h-screen w-full flex-col justify-between overflow-x-hidden bg-[#F0F0F0] p-4">
       {/* Webpage URL */}
       <div className="m-4 rounded-lg bg-[#DCDDDE] py-2 text-center font-medium text-[#62646B]">
-        {webpageURL ? webpageURL : "No WebPage Link Found"}
+        {props.webpageURL ? props.webpageURL : "No WebPage Link Found"}
       </div>
 
       {/* Summary Section */}
-      <div className="mb-4">
-        <h2 className="mb-2 text-xl font-semibold">Summary</h2>
-        <p>Your summary text goes here...</p>
+      <div className="items-around mb-4 flex flex-col justify-center gap-y-2 rounded-lg bg-[#DCDDDE] px-2 py-1">
+        <div
+          className="flex cursor-pointer items-center justify-between"
+          onClick={() => setIsSummaryVisible(!isSummaryVisible)}
+        >
+          <h2 className="mb-2 text-xl font-semibold">Summary</h2>
+          {isSummaryVisible ? <IoIosArrowUp /> : <IoIosArrowDown />}
+        </div>
+        <p className={`text-justify ${isSummaryVisible ? "" : "hidden"}`}>
+          {props.summaryData}
+        </p>
       </div>
 
       <h2 className="mb-2 text-xl font-semibold">Chat</h2>
-      <div className="m-4 flex flex-col gap-y-4">
+      <div className={`flex flex-col gap-y-4 rounded-lg p-2`}>
         {/* Displaying history of questions and responses */}
         {history.map((message, index) => (
           <TextBox

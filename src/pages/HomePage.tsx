@@ -7,12 +7,15 @@ import AnalyseImagePage from "./AnalyseImagePage";
 import CSVAnalyisPage from "./CSVAnalyisPage";
 import TranscribeVideoPage from "./TranscribeVideoPage";
 import { CgTranscript } from "react-icons/cg";
+import { IoChatbox } from "react-icons/io5";
+import { BiSolidAnalyse } from "react-icons/bi";
 
 const HomePage = () => {
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
   const [webpageURL, setWebpageURL] = useState<string>("");
   const [transcriptionData, setTranscriptionData] = useState("");
   const [summaryData, setSummaryData] = useState("");
+  const [chatSummaryText, setChatSummaryText] = useState("");
 
   const handleFeatureClick = (featureLabel: string) => {
     setWebpageURL("");
@@ -52,6 +55,57 @@ const HomePage = () => {
       }
     }
   }, [selectedFeature, webpageURL]);
+
+  const scrapeAndSummarizeText = () => {
+    // URL encode the webpageURL for the scraping request
+    const encodedPageURL = encodeURIComponent(webpageURL);
+
+    // Make the scraping request
+    fetch(`http://127.0.0.1:8000/scrape/text/?url=${encodedPageURL}`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Assuming the scraped text is directly in `data` or adjust according to the actual response structure
+        const scrapedText = data.response.join("\n");
+        const encodedText = encodeURIComponent(scrapedText);
+
+        // Make the summarization request
+        return fetch(
+          `http://127.0.0.1:8000/summarize/text/?text=${encodedText}`,
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+            },
+          },
+        );
+      })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((summaryData) => {
+        // Update your state or UI component with the summary text
+        // Assuming `summaryText` is the state variable holding the summary and `setSummaryText` is the method to update it
+        setChatSummaryText(summaryData.response);
+      })
+      .catch((error) => {
+        console.error("Error processing the text:", error);
+        // Handle error, maybe update state to show error to the user
+        setChatSummaryText("Error loading summary.");
+      });
+  };
 
   useEffect(() => {
     return () => {
@@ -140,19 +194,41 @@ const HomePage = () => {
               onChange={handleURLChange}
             />
             {/* Arrow Button */}
-            <div
-              onClick={() => {
-                if (selectedFeature === "Transcribe Video") {
+            {selectedFeature === "Transcribe Video" ? (
+              <div
+                onClick={() => {
                   setTranscriptionData("");
                   setSummaryData("");
                   fetchTranscriptionData();
-                }
-              }}
-              title="Transcribe Video"
-              className={`flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1 ${selectedFeature === "Transcribe Video" ? "" : "hidden"}`}
-            >
-              <CgTranscript className="text-white" />
-            </div>
+                }}
+                title="Transcribe Video"
+                className={`flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1`}
+              >
+                <CgTranscript className="text-xl text-white" />
+              </div>
+            ) : selectedFeature === "Chat" ? (
+              <div
+                onClick={() => {
+                  scrapeAndSummarizeText();
+                }}
+                title="Summarize and Chat"
+                className={`flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1`}
+              >
+                {" "}
+                <IoChatbox className="text-xl text-white" />{" "}
+              </div>
+            ) : selectedFeature === "Analyse Image" ? (
+              <div
+                onClick={() => {}}
+                title="Analyse Image"
+                className={`flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1`}
+              >
+                {" "}
+                <BiSolidAnalyse className="text-xl text-white" />{" "}
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
 
@@ -165,7 +241,7 @@ const HomePage = () => {
       </div>
 
       {selectedFeature === "Chat" ? (
-        <ChatPage webpageURL={webpageURL} />
+        <ChatPage webpageURL={webpageURL} summaryData={chatSummaryText} />
       ) : selectedFeature === "Analyse Image" ? (
         <AnalyseImagePage />
       ) : selectedFeature === "CSV Analysis" ? (
