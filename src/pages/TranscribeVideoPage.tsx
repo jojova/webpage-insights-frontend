@@ -14,7 +14,7 @@ const TranscribeVideoPage = (props: TranscribeVideoPageProps) => {
   const videoID = props.videoURL.split("=")[1];
 
   return (
-    <div className="flex h-screen w-full flex-col justify-between overflow-x-hidden bg-[#F0F0F0]">
+    <div className="flex h-screen w-full flex-col justify-between overflow-x-hidden bg-[#F0F0F0] p-4">
       {/* Transcribe Video Heading and Thumbnail */}
       <div className="m-4 flex flex-col gap-y-2">
         <h2 className="font-semibold">Transcribe Video</h2>

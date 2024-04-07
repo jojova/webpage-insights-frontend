@@ -68,7 +68,7 @@ const CSVAnalysisPage: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen w-full flex-col justify-between overflow-x-hidden bg-[#F0F0F0]">
+    <div className="flex h-screen w-full flex-col justify-between overflow-x-hidden bg-[#F0F0F0] p-4">
       <div className="m-4 rounded-lg bg-[#DCDDDE] py-2 text-center font-medium text-[#62646B]">
         {selectedFile ? selectedFile.name : "No File Selected"}
       </div>
