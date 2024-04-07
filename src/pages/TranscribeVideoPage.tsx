@@ -124,6 +124,7 @@ const TranscribeVideoPage: React.FC<TranscribeVideoPageProps> = (props) => {
       </div>
 
       <div className="m-4 flex flex-col gap-y-4">
+        <h2 className="font-semibold">Chat</h2>
         {/* Displaying history of questions and responses */}
         {history.map((message, index) => (
           <TextBox
