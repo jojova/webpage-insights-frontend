@@ -16,7 +16,7 @@ const HomePage = () => {
 
   const handleFeatureClick = (featureLabel: string) => {
     setWebpageURL("");
-    setSelectedFeature(featureLabel === selectedFeature ? null : featureLabel);
+    setSelectedFeature(featureLabel);
   };
 
   const handleURLChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,18 +63,24 @@ const HomePage = () => {
   return (
     <div className="flex w-full">
       <div
-        className={`no-scrollbar flex h-screen ${
+        className={`no-scrollbar flex h-screen overflow-hidden ${
           selectedFeature ? "w-[40%]" : ""
-        } w-screen flex-col items-center justify-between bg-gradient-to-t from-[#ADC8CD] to-[#FFFFFF] to-50%`}
+        } w-screen select-none flex-col items-center justify-between bg-gradient-to-t from-[#ADC8CD] to-[#FFFFFF] to-50%`}
       >
         {/* Title */}
         <div className="flex w-full items-center justify-between px-[4rem] py-[2rem]">
           <div className="flex w-full items-center gap-x-4">
             {" "}
-            <div className="cursor-pointer">
-              <h2 className="pointer-events-none text-4xl font-bold text-[#0A5463]">
-                WPI
-              </h2>
+            <div
+              onClick={() => {
+                setSelectedFeature("");
+                setWebpageURL("");
+                setSummaryData("");
+                setTranscriptionData("");
+              }}
+              className="cursor-pointer"
+            >
+              <h2 className="text-4xl font-bold text-[#0A5463]">WPI</h2>
             </div>
             <h2
               className={`text-sm font-medium lg:text-lg ${
@@ -151,7 +157,11 @@ const HomePage = () => {
         </div>
 
         {/* Image */}
-        <img src={aestheticBuildings} alt="" className="pointer-events-none" />
+        <img
+          src={aestheticBuildings}
+          alt="Aesthetic Buildings Image"
+          className="pointer-events-none -mb-[0.3rem]"
+        />
       </div>
 
       {selectedFeature === "Chat" ? (
