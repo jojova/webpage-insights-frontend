@@ -1,8 +1,11 @@
+
 import ChatBar from "../components/ChatBar";
 import { FaArrowRight } from "react-icons/fa6";
 import { GiMagicBroom } from "react-icons/gi";
 
-const AnalyseImagePage = () => {
+const AnalyseImagePage = ({images}) => {
+  
+
   return (
     <div className="flex w-full flex-col justify-between bg-[#F0F0F0] p-4">
       {/* Webpage URL */}
@@ -10,32 +13,29 @@ const AnalyseImagePage = () => {
         Webpage URL
       </div>
       {/* Summary Section */}
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <h2 className="mb-2 text-xl font-semibold">Summary</h2>
         <p>Your summary text goes here...</p>
-      </div>
+      </div> */}
 
-      {/* Recommendation Section */}
-      <div className="mb-4">
-        <h2 className="mb-2 text-xl font-semibold">Recommendations</h2>
-        <div className="flex flex-wrap gap-4">
-          {/* Recommendation Boxes */}
 
-          {/* Add more recommendation boxes as needed */}
-        </div>
-      </div>
 
       {/* Chat Section */}
       <div>
         <h2 className="mb-2 text-xl font-semibold">Analysis Image </h2>
-        <p>
-          This passage provides a brief biography of Steven Paul Jobs,
-          highlighting key aspects of his life and contributions to the
-          technology industry. Born in 1955, Jobs co-founded Apple Inc.
-          alongside Steve Wozniak, playing a pivotal role in the personal
-          computer revolution of the 1970s and 1980s.{" "}
-        </p>
+        {/* Render fetched images */}
+      <div className="flex flex-wrap">
+        {images.map((image, index) => (
+          <img
+            key={index}
+            src={image.url} // Assuming each image object has a 'url' field
+            alt={`Image ${index + 1}`}
+            className="m-2"
+            style={{ maxWidth: "200px" }}
+          />
+        ))}
         <br></br>
+        </div>
 
         {/* Chat input */}
         <div className="py-100 m-3 flex gap-x-2">

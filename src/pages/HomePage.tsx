@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import FeatureButton from "../components/FeatureButton";
 import aestheticBuildings from "../assets/aesthetic-buildings.png";
@@ -16,6 +16,7 @@ const HomePage = () => {
   const [transcriptionData, setTranscriptionData] = useState("");
   const [summaryData, setSummaryData] = useState("");
   const [chatSummaryText, setChatSummaryText] = useState("");
+  const [images, setImages] = useState<any[]>([]); // Initialize images state
 
   const handleFeatureClick = (featureLabel: string) => {
     setWebpageURL("");
@@ -35,7 +36,7 @@ const HomePage = () => {
         // Fetch transcription data
         const response1 = await axios.post(
           `http://127.0.0.1:8000/summarize/youtube/text/?url=${encodedUrl}`,
-          {},
+          {}
         );
         const data1 = response1.data;
         setTranscriptionData(data1.response[0]);
@@ -44,7 +45,7 @@ const HomePage = () => {
         const encodedTranscription = encodeURIComponent(data1.response[0]);
         const response2 = await axios.post(
           `http://127.0.0.1:8000/summarize/text/?text=${encodedTranscription}`,
-          {},
+          {}
         );
         const data2 = response2.data;
         setSummaryData(data2.response);
@@ -114,6 +115,29 @@ const HomePage = () => {
     };
   }, [webpageURL]);
 
+  const fetchImagesFromBackend = async (webpageURL) => {
+    console.log(`hi`);
+    try {
+      const response = await fetch(`http://localhost:8000/scrape/image/?url=${encodeURIComponent(webpageURL)}`, {
+        method: "POST",
+        headers: {
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({}) // No need to include the URL in the body
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch images");
+      }
+      const data = await response.json();
+      // Update state with fetched images
+      setImages(data.images);
+    } catch (error) {
+      console.error("Error fetching images:", error);
+    }
+  };
+  
+  
+
   return (
     <div className="flex w-full">
       <div
@@ -124,7 +148,6 @@ const HomePage = () => {
         {/* Title */}
         <div className="flex w-full items-center justify-between px-[4rem] py-[2rem]">
           <div className="flex w-full items-center gap-x-4">
-            {" "}
             <div
               onClick={() => {
                 setSelectedFeature("");
@@ -179,7 +202,9 @@ const HomePage = () => {
             />
           </div>
           <div
-            className={`flex w-full gap-x-2 ${selectedFeature === "CSV Analysis" ? "invisible" : ""}`}
+            className={`flex w-full gap-x-2 ${
+              selectedFeature === "CSV Analysis" ? "invisible" : ""
+            }`}
           >
             {/* WebPage Link Input Field */}
             <input
@@ -219,7 +244,7 @@ const HomePage = () => {
               </div>
             ) : selectedFeature === "Analyse Image" ? (
               <div
-                onClick={() => {}}
+              onClick={() => fetchImagesFromBackend(webpageURL)}
                 title="Analyse Image"
                 className={`flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1`}
               >
@@ -240,10 +265,11 @@ const HomePage = () => {
         />
       </div>
 
+      {/* Render selected feature */}
       {selectedFeature === "Chat" ? (
         <ChatPage webpageURL={webpageURL} summaryData={chatSummaryText} />
       ) : selectedFeature === "Analyse Image" ? (
-        <AnalyseImagePage />
+        <AnalyseImagePage images={images} />
       ) : selectedFeature === "CSV Analysis" ? (
         <CSVAnalyisPage />
       ) : selectedFeature === "Transcribe Video" ? (
