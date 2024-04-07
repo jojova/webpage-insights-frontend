@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent } from "react";
 import axios from "axios";
 import { FaArrowRight } from "react-icons/fa6";
 import ChatBar from "../components/ChatBar";
-import TextBox from "../components/TextBox"; // Import the TextBox component
+import TextBox from "../components/TextBox";
 
 interface Message {
   text: string;
@@ -16,39 +16,43 @@ const CSVAnalysisPage: React.FC = () => {
   const [resetInputTrigger, setResetInputTrigger] = useState(false);
 
   const sendRequest = async () => {
-    // Check if both a file is selected and a query is entered
-    if (!selectedFile || !currentQuery) {
+    if (!selectedFile || !currentQuery.trim()) {
       console.error("No file selected or query entered");
       return;
     }
 
     const formData = new FormData();
     formData.append("file", selectedFile);
-    // Assuming your backend expects the query as part of the formData
-    formData.append("query", currentQuery);
+
+    // Construct the query string
+    const queryString = encodeURIComponent(currentQuery.trim());
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/csv/query/",
-        formData,
+        `http://localhost:8000/csv/chart/?query=${queryString}`,
+        formData, // Now only includes the file
         { headers: { "Content-Type": "multipart/form-data" } },
       );
 
-      // Assuming response.data contains the answer to the query
       const serverResponse = response.data.response;
-
-      // Update the chat history with the query and the response
       setHistory((prevHistory) => [
         ...prevHistory,
         { text: currentQuery, isSender: true },
         { text: serverResponse, isSender: false },
       ]);
 
-      // Clear the current query and reset input trigger for ChatBar component
       setCurrentQuery("");
       setResetInputTrigger((prev) => !prev);
     } catch (error) {
-      console.error("Error fetching response:", error);
+      // Updated error handling for TypeScript types
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Error fetching response:",
+          error.response?.data || error.message,
+        );
+      } else {
+        console.error("An unexpected error occurred:", error);
+      }
     }
   };
 
@@ -71,7 +75,6 @@ const CSVAnalysisPage: React.FC = () => {
 
       <h2 className="mb-2 text-xl font-semibold">Chat</h2>
       <div className="m-4 flex flex-col gap-y-4">
-        {/* Displaying history of queries and responses */}
         {history.map((message, index) => (
           <TextBox
             key={index}
@@ -99,11 +102,10 @@ const CSVAnalysisPage: React.FC = () => {
           Select CSV File
         </label>
 
-        {/* ChatBar component */}
         <ChatBar
           onTextChange={handleQueryChange}
           resetTrigger={resetInputTrigger}
-          sendRequest={() => sendRequest()}
+          sendRequest={sendRequest}
         />
       </div>
     </div>
