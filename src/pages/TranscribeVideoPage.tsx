@@ -96,7 +96,7 @@ const TranscribeVideoPage: React.FC<TranscribeVideoPageProps> = (props) => {
       </div>
 
       {/* Summary */}
-      <div className="m-4 flex flex-col gap-y-2">
+      <div className="items-around m-4 flex flex-col justify-center gap-y-2 rounded-lg bg-[#DCDDDE] px-2 py-1">
         <div
           className="flex cursor-pointer items-center justify-between"
           onClick={() => setIsSummaryVisible(!isSummaryVisible)}
@@ -110,7 +110,7 @@ const TranscribeVideoPage: React.FC<TranscribeVideoPageProps> = (props) => {
       </div>
 
       {/* Transcription */}
-      <div className="m-4 flex flex-col gap-y-2">
+      <div className="items-around m-4 flex flex-col justify-center gap-y-2 rounded-lg bg-[#DCDDDE] px-2 py-1">
         <div
           className="flex cursor-pointer items-center justify-between"
           onClick={() => setIsTranscriptionVisible(!isTranscriptionVisible)}
