@@ -147,6 +147,7 @@ const HomePage = () => {
         <CSVAnalyisPage />
       ) : selectedFeature === "Transcribe Video" ? (
         <TranscribeVideoPage
+          videoURL={webpageURL}
           transcriptionData={transcriptionData}
           summaryData={summaryData}
         />
