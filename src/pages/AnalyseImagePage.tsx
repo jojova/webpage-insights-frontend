@@ -1,13 +1,14 @@
-
 import ChatBar from "../components/ChatBar";
 import { FaArrowRight } from "react-icons/fa6";
 import { GiMagicBroom } from "react-icons/gi";
 
-const AnalyseImagePage = ({images}) => {
-  
+interface AnalyseImagePageProps {
+  imageURLs: string[];
+}
 
+const AnalyseImagePage = (props: AnalyseImagePageProps) => {
   return (
-    <div className="flex w-full flex-col justify-between bg-[#F0F0F0] p-4">
+    <div className="flex h-screen w-full flex-col justify-between overflow-x-hidden bg-[#F0F0F0] p-4">
       {/* Webpage URL */}
       <div className="m-4 rounded-lg bg-[#DCDDDE] py-2 text-center font-medium text-[#62646B]">
         Webpage URL
@@ -18,23 +19,22 @@ const AnalyseImagePage = ({images}) => {
         <p>Your summary text goes here...</p>
       </div> */}
 
-
-
       {/* Chat Section */}
       <div>
         <h2 className="mb-2 text-xl font-semibold">Analysis Image </h2>
         {/* Render fetched images */}
-      <div className="flex flex-wrap">
-        {images.map((image, index) => (
-          <img
-            key={index}
-            src={image.url} // Assuming each image object has a 'url' field
-            alt={`Image ${index + 1}`}
-            className="m-2"
-            style={{ maxWidth: "200px" }}
-          />
-        ))}
-        <br></br>
+        <div className="flex flex-wrap">
+          {props.imageURLs.map((imageURL, index) => (
+            <div key={index} className="m-2">
+              <img
+                key={index}
+                src={imageURL} // Assuming each image object has a 'url' field
+                alt={`Image ${index + 1}`}
+                className="m-2"
+                style={{ maxWidth: "200px" }}
+              />
+            </div>
+          ))}
         </div>
 
         {/* Chat input */}

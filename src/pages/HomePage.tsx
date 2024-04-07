@@ -16,7 +16,7 @@ const HomePage = () => {
   const [transcriptionData, setTranscriptionData] = useState("");
   const [summaryData, setSummaryData] = useState("");
   const [chatSummaryText, setChatSummaryText] = useState("");
-  const [images, setImages] = useState<any[]>([]); // Initialize images state
+  const [imagesURLs, setImageURLs] = useState([]); // Initialize images state
 
   const handleFeatureClick = (featureLabel: string) => {
     setWebpageURL("");
@@ -36,7 +36,7 @@ const HomePage = () => {
         // Fetch transcription data
         const response1 = await axios.post(
           `http://127.0.0.1:8000/summarize/youtube/text/?url=${encodedUrl}`,
-          {}
+          {},
         );
         const data1 = response1.data;
         setTranscriptionData(data1.response[0]);
@@ -45,7 +45,7 @@ const HomePage = () => {
         const encodedTranscription = encodeURIComponent(data1.response[0]);
         const response2 = await axios.post(
           `http://127.0.0.1:8000/summarize/text/?text=${encodedTranscription}`,
-          {}
+          {},
         );
         const data2 = response2.data;
         setSummaryData(data2.response);
@@ -115,28 +115,40 @@ const HomePage = () => {
     };
   }, [webpageURL]);
 
-  const fetchImagesFromBackend = async (webpageURL) => {
-    console.log(`hi`);
+  const fetchImagesFromBackend = async (webpageURL: string) => {
     try {
-      const response = await fetch(`http://localhost:8000/scrape/image/?url=${encodeURIComponent(webpageURL)}`, {
-        method: "POST",
-        headers: {
-          "Accept": "application/json"
+      const response = await fetch(
+        `http://localhost:8000/scrape/image/?url=${encodeURIComponent(webpageURL)}`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+          },
+          body: JSON.stringify({}), // No need to include the URL in the body
         },
-        body: JSON.stringify({}) // No need to include the URL in the body
-      });
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch images");
       }
-      const data = await response.json();
-      // Update state with fetched images
-      setImages(data.images);
+      const responseData = await response.json();
+      console.log("Data ==>> ", responseData);
+
+      // Check if responseData has a 'response' property containing an array
+      if (responseData && Array.isArray(responseData.response)) {
+        const filteredData = responseData.response.filter((url: string) =>
+          url.startsWith("http"),
+        );
+        // Update state with fetched images
+        setImageURLs(filteredData);
+      } else {
+        throw new Error(
+          "Invalid response format or missing 'response' property",
+        );
+      }
     } catch (error) {
       console.error("Error fetching images:", error);
     }
   };
-  
-  
 
   return (
     <div className="flex w-full">
@@ -244,7 +256,7 @@ const HomePage = () => {
               </div>
             ) : selectedFeature === "Analyse Image" ? (
               <div
-              onClick={() => fetchImagesFromBackend(webpageURL)}
+                onClick={() => fetchImagesFromBackend(webpageURL)}
                 title="Analyse Image"
                 className={`flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1`}
               >
@@ -269,7 +281,7 @@ const HomePage = () => {
       {selectedFeature === "Chat" ? (
         <ChatPage webpageURL={webpageURL} summaryData={chatSummaryText} />
       ) : selectedFeature === "Analyse Image" ? (
-        <AnalyseImagePage images={images} />
+        <AnalyseImagePage imageURLs={imagesURLs} />
       ) : selectedFeature === "CSV Analysis" ? (
         <CSVAnalyisPage />
       ) : selectedFeature === "Transcribe Video" ? (
