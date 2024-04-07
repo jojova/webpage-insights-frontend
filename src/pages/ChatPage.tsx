@@ -75,7 +75,7 @@ const ChatPage: React.FC<ChatPageProps> = (props: ChatPageProps) => {
           className="flex cursor-pointer items-center justify-between"
           onClick={() => setIsSummaryVisible(!isSummaryVisible)}
         >
-          <h2 className="mb-2 text-xl font-semibold">Summary</h2>
+          <h2 className="mb-2 font-semibold">Summary</h2>
           {isSummaryVisible ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
         <p className={`text-justify ${isSummaryVisible ? "" : "hidden"}`}>
@@ -83,7 +83,7 @@ const ChatPage: React.FC<ChatPageProps> = (props: ChatPageProps) => {
         </p>
       </div>
 
-      <h2 className="mb-2 text-xl font-semibold">Chat</h2>
+      <h2 className="mb-2 font-semibold">Chat</h2>
       <div className={`flex flex-col gap-y-4 rounded-lg p-2`}>
         {/* Displaying history of questions and responses */}
         {history.map((message, index) => (
