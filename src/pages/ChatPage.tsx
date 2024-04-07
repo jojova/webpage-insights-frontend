@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa6";
-import { AiOutlinePieChart } from "react-icons/ai";
+import { GiMagicBroom } from "react-icons/gi";
 import ChatBar from "../components/ChatBar";
 import TextBox from "../components/TextBox";
 import "./ChatPage.css";
@@ -20,7 +20,6 @@ const ChatPage: React.FC<ChatPageProps> = ({ webpageURL }) => {
   const [resetInputTrigger, setResetInputTrigger] = useState(false);
 
   const sendRequest = (question = currentQuestion) => {
-    console.log("Request initiated ==>> ", question);
     // Only send request if question is not empty
     if (!question) return;
 
@@ -45,8 +44,6 @@ const ChatPage: React.FC<ChatPageProps> = ({ webpageURL }) => {
         ]);
         setCurrentQuestion(""); // Clear the current question after sending request
         setResetInputTrigger((prev) => !prev);
-        console.log("Response ==>> ", data);
-        console.log("History ==>> ", history);
       })
       .catch((error) => console.error("Error fetching response:", error));
   };
@@ -97,12 +94,16 @@ const ChatPage: React.FC<ChatPageProps> = ({ webpageURL }) => {
           />
           <div
             onClick={() => sendRequest()}
+            title="Send Request"
             className="flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1"
           >
             <FaArrowRight className="text-white" />
           </div>
-          <div className="flex w-fit cursor-pointer items-center justify-center rounded-lg border-2 border-[#0A5463] bg-[#CEEBF1] px-2 py-1">
-            <AiOutlinePieChart className="h-[24px] w-[24px] text-[#0A5463]" />
+          <div
+            title="Clear Context"
+            className="flex w-fit cursor-pointer items-center justify-center rounded-lg border-2 border-[#0A5463] bg-[#CEEBF1] px-2 py-1"
+          >
+            <GiMagicBroom className="h-[24px] w-[24px] text-[#0A5463]" />
           </div>
         </div>
       </div>

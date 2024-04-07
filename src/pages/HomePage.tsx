@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import FeatureButton from "../components/FeatureButton";
 import aestheticBuildings from "../assets/aesthetic-buildings.png";
@@ -15,6 +15,7 @@ const HomePage = () => {
   const [summaryData, setSummaryData] = useState("");
 
   const handleFeatureClick = (featureLabel: string) => {
+    setWebpageURL("");
     setSelectedFeature(featureLabel === selectedFeature ? null : featureLabel);
   };
 
@@ -45,12 +46,19 @@ const HomePage = () => {
         const data2 = response2.data;
         setSummaryData(data2.response);
       } catch (error) {
-        setTranscriptionData("Invalid YouTube URL!");
-        setSummaryData("Invalid Transcript!");
+        setTranscriptionData("Please enter a valid YouTube URL!");
+        setSummaryData("Please enter a valid YouTube URL!");
         console.error("Error fetching data:", error);
       }
     }
   }, [selectedFeature, webpageURL]);
+
+  useEffect(() => {
+    return () => {
+      setSummaryData("");
+      setTranscriptionData("");
+    };
+  }, [webpageURL]);
 
   return (
     <div className="flex w-full">
@@ -110,7 +118,9 @@ const HomePage = () => {
               onClick={() => handleFeatureClick("Transcribe Video")}
             />
           </div>
-          <div className="flex w-full gap-x-2">
+          <div
+            className={`flex w-full gap-x-2 ${selectedFeature === "CSV Analysis" ? "hidden" : ""}`}
+          >
             {/* WebPage Link Input Field */}
             <input
               type="text"
@@ -128,7 +138,8 @@ const HomePage = () => {
                   fetchTranscriptionData();
                 }
               }}
-              className="flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1"
+              title="Send Request"
+              className={`flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1 ${selectedFeature === "Transcribe Video" ? "" : "hidden"}`}
             >
               <FaArrowRight className="text-white" />
             </div>

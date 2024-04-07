@@ -35,6 +35,7 @@ const ChatBar = (props: ChatBarProps) => {
       type="text"
       placeholder="Ask"
       className="w-full rounded-lg bg-[#FFFFFF] p-2"
+      title="Enter Your Query Here"
       value={inputValue}
       onChange={handleInputChange}
       onKeyPress={handleEnterKeyPress}
