@@ -24,6 +24,7 @@ const HomePage = () => {
     "Please enter a valid WebPage URL",
   );
   const [imagesURLs, setImageURLs] = useState<string[]>([]); // Initialize images state
+  const [imagePageTitle, setImagePageTitle] = useState("Analyse Images");
 
   const handleFeatureClick = (featureLabel: string) => {
     setWebpageURL("");
@@ -180,6 +181,7 @@ const HomePage = () => {
       setChatSummaryText("Please enter a valid WebPage URL");
       setTranscriptionData("Please enter a valid YouTube Link");
       setSummaryData("Please enter a valid YouTube Link");
+      setImageURLs([]);
     };
   }, [webpageURL]);
 
@@ -312,7 +314,10 @@ const HomePage = () => {
               </div>
             ) : selectedFeature === "Analyse Image" ? (
               <div
-                onClick={() => fetchImagesFromBackend(webpageURL)}
+                onClick={() => {
+                  setImagePageTitle("Loading Images...");
+                  fetchImagesFromBackend(webpageURL);
+                }}
                 title="Analyse Image"
                 className={`flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1`}
               >
@@ -337,7 +342,12 @@ const HomePage = () => {
       {selectedFeature === "Chat" ? (
         <ChatPage webpageURL={webpageURL} summaryData={chatSummaryText} />
       ) : selectedFeature === "Analyse Image" ? (
-        <AnalyseImagePage webpageURL={webpageURL} imageURLs={imagesURLs} />
+        <AnalyseImagePage
+          webpageURL={webpageURL}
+          title={imagePageTitle}
+          setTitle={setImagePageTitle}
+          imageURLs={imagesURLs}
+        />
       ) : selectedFeature === "CSV Analysis" ? (
         <CSVAnalyisPage />
       ) : selectedFeature === "Transcribe Video" ? (
