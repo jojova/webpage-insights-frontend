@@ -69,16 +69,16 @@ const AnalyseImagePage = (props: AnalyseImagePageProps) => {
       </h2>
 
       <div>
-        <div className="flex w-full max-w-[200px] flex-col items-center justify-center gap-4">
+        <div className="grid grid-cols-3 gap-4">
           {props.imageURLs.map((imageURL, index) => (
             <div
               key={index}
-              className="m-2 flex flex-col items-center justify-center"
+              className="m-2 flex flex-col items-center justify-center rounded-lg bg-[#DCDDDE] px-4 py-2"
             >
               <img src={imageURL} alt={`Image ${index + 1}`} className="m-2" />
-              <h1 className="mt-2 text-center text-[#FF0000]">
+              <h1 className="mt-2 text-center text-black">
                 {captions.find((caption) => caption.url === imageURL)
-                  ?.caption || "Fetching caption..."}
+                  ?.caption || "Fetching Caption..."}
               </h1>
             </div>
           ))}
