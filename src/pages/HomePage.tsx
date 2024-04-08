@@ -136,8 +136,9 @@ const HomePage = () => {
 
       // Check if responseData has a 'response' property containing an array
       if (responseData && Array.isArray(responseData.response)) {
-        const filteredData = responseData.response.filter((url: string) =>
-          url.startsWith("http"),
+        const filteredData = responseData.response.filter(
+          (url: string) =>
+            url.startsWith("http") && url.match(/\.(jpeg|jpg|png)$/),
         );
         // Update state with fetched images
         setImageURLs(filteredData);
@@ -168,18 +169,38 @@ const HomePage = () => {
                 setSummaryData("");
                 setTranscriptionData("");
               }}
-              className="flex cursor-pointer items-center justify-center"
+              className="flex cursor-pointer items-center justify-center gap-x-2"
             >
-              <img src={logo} className=" w-[60px]" alt="" />
-              <h2 className="text-4xl font-bold text-[#0A5463]">WPI</h2>
+              {/* Logo */}
+              <img
+                src={logo}
+                className="pointer-events-none w-[60px] select-none"
+                alt=""
+              />
+              {/* WPI */}
+              <div className="flex flex-col">
+                <div className="flex">
+                  <h1 className="text-3xl font-bold text-[#0A5463]">W</h1>
+                  <h1 className="font-base text-3xl text-[#0A5463]">eb</h1>
+                </div>
+                <div className="flex">
+                  <h1 className="text-3xl font-bold text-[#0A5463]">P</h1>
+                  <h1 className="font-base text-3xl text-[#0A5463]">age</h1>
+                </div>
+                <div className="flex">
+                  <h1 className="text-3xl font-bold text-[#0A5463]">I</h1>
+                  <h1 className="font-base text-3xl text-[#0A5463]">nsights</h1>
+                </div>
+              </div>
+              {/* Tagline */}
+              {/* <h2
+                className={`text-sm font-medium lg:text-lg ${
+                  selectedFeature ? "hidden" : ""
+                }`}
+              >
+                Revolutionize Your Browsing Experience
+              </h2> */}
             </div>
-            <h2
-              className={`text-sm font-medium lg:text-lg ${
-                selectedFeature ? "hidden" : ""
-              }`}
-            >
-              Revolutionize Your Browsing Experience
-            </h2>
           </div>
           {/* Install Extension Button */}
           <div className="hidden w-fit cursor-pointer whitespace-nowrap rounded-lg bg-[#ADC8CD] px-4 py-2 font-semibold text-[#000000] lg:inline">
@@ -283,7 +304,7 @@ const HomePage = () => {
       {selectedFeature === "Chat" ? (
         <ChatPage webpageURL={webpageURL} summaryData={chatSummaryText} />
       ) : selectedFeature === "Analyse Image" ? (
-        <AnalyseImagePage imageURLs={imagesURLs} />
+        <AnalyseImagePage webpageURL={webpageURL} imageURLs={imagesURLs} />
       ) : selectedFeature === "CSV Analysis" ? (
         <CSVAnalyisPage />
       ) : selectedFeature === "Transcribe Video" ? (
