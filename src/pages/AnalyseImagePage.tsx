@@ -69,7 +69,7 @@ const AnalyseImagePage = (props: AnalyseImagePageProps) => {
       </h2>
 
       <div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {props.imageURLs.map((imageURL, index) => (
             <div
               key={index}

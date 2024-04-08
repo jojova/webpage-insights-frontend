@@ -196,7 +196,7 @@ const HomePage = () => {
         } w-screen select-none flex-col items-center justify-between bg-gradient-to-t from-[#ADC8CD] to-[#FFFFFF] to-50%`}
       >
         {/* Title */}
-        <div className="flex w-full items-center justify-between px-[4rem] py-[2rem]">
+        <div className="flex w-full items-center justify-between px-[4rem] py-[2rem] pl-[1rem]">
           <div className="flex w-full items-center gap-x-8">
             <div
               onClick={() => {
@@ -216,7 +216,7 @@ const HomePage = () => {
                 alt=""
               />
               {/* WPI */}
-              <div className="flex flex-col">
+              <div className="flex gap-x-2">
                 <div className="flex">
                   <h1 className="text-3xl font-bold text-[#0A5463]">W</h1>
                   <h1 className="font-base text-3xl text-[#0A5463]">eb</h1>
@@ -241,9 +241,9 @@ const HomePage = () => {
             </div>
           </div>
           {/* Install Extension Button */}
-          <div className="hidden w-fit cursor-pointer whitespace-nowrap rounded-lg bg-[#ADC8CD] px-4 py-2 font-semibold text-[#000000] lg:inline">
+          {/* <div className="hidden w-fit cursor-pointer whitespace-nowrap rounded-lg bg-[#ADC8CD] px-4 py-2 font-semibold text-[#000000] lg:inline">
             Install Extension
-          </div>
+          </div> */}
         </div>
 
         <div className="flex flex-col items-center justify-center gap-y-4 px-4">
