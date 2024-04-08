@@ -135,8 +135,9 @@ const HomePage = () => {
 
       // Check if responseData has a 'response' property containing an array
       if (responseData && Array.isArray(responseData.response)) {
-        const filteredData = responseData.response.filter((url: string) =>
-          url.startsWith("http"),
+        const filteredData = responseData.response.filter(
+          (url: string) =>
+            url.startsWith("http") && url.match(/\.(jpeg|jpg|png)$/),
         );
         // Update state with fetched images
         setImageURLs(filteredData);
@@ -281,7 +282,7 @@ const HomePage = () => {
       {selectedFeature === "Chat" ? (
         <ChatPage webpageURL={webpageURL} summaryData={chatSummaryText} />
       ) : selectedFeature === "Analyse Image" ? (
-        <AnalyseImagePage imageURLs={imagesURLs} />
+        <AnalyseImagePage webpageURL={webpageURL} imageURLs={imagesURLs} />
       ) : selectedFeature === "CSV Analysis" ? (
         <CSVAnalyisPage />
       ) : selectedFeature === "Transcribe Video" ? (
