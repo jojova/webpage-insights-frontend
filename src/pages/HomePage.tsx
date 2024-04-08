@@ -9,6 +9,7 @@ import TranscribeVideoPage from "./TranscribeVideoPage";
 import { CgTranscript } from "react-icons/cg";
 import { IoChatbox } from "react-icons/io5";
 import { BiSolidAnalyse } from "react-icons/bi";
+import logo from "../assets/logo.png";
 
 const HomePage = () => {
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
@@ -160,7 +161,7 @@ const HomePage = () => {
       >
         {/* Title */}
         <div className="flex w-full items-center justify-between px-[4rem] py-[2rem]">
-          <div className="flex w-full items-center gap-x-4">
+          <div className="flex w-full items-center gap-x-8">
             <div
               onClick={() => {
                 setSelectedFeature("");
@@ -168,8 +169,9 @@ const HomePage = () => {
                 setSummaryData("");
                 setTranscriptionData("");
               }}
-              className="cursor-pointer"
+              className="flex cursor-pointer items-center justify-center"
             >
+              <img src={logo} className=" w-[60px]" alt="" />
               <h2 className="text-4xl font-bold text-[#0A5463]">WPI</h2>
             </div>
             <h2
