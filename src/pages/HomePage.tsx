@@ -32,6 +32,7 @@ const HomePage = () => {
     setTranscriptionData("Please enter a valid YouTube Link");
     setChatSummaryText("Please enter a valid WebPage URL");
     setImageURLs([]);
+    setImagePageTitle("Analyse Images");
     setSelectedFeature(featureLabel);
   };
 
@@ -172,6 +173,7 @@ const HomePage = () => {
         );
       }
     } catch (error) {
+      setImagePageTitle("Error Fetching Images...");
       console.error("Error fetching images:", error);
     }
   };
@@ -182,6 +184,7 @@ const HomePage = () => {
       setTranscriptionData("Please enter a valid YouTube Link");
       setSummaryData("Please enter a valid YouTube Link");
       setImageURLs([]);
+      setImagePageTitle("Analyse Images");
     };
   }, [webpageURL]);
 
