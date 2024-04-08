@@ -23,7 +23,7 @@ const HomePage = () => {
   const [chatSummaryText, setChatSummaryText] = useState(
     "Please enter a valid WebPage URL",
   );
-  const [imagesURLs, setImageURLs] = useState([]); // Initialize images state
+  const [imagesURLs, setImageURLs] = useState<string[]>([]); // Initialize images state
 
   const handleFeatureClick = (featureLabel: string) => {
     setWebpageURL("");
@@ -159,8 +159,12 @@ const HomePage = () => {
           (url: string) =>
             url.startsWith("http") && url.match(/\.(jpeg|jpg|png)$/),
         );
+
+        // Filter out duplicate URLs
+        const uniqueImageURLs: string[] = Array.from(new Set(filteredData));
+
         // Update state with fetched images
-        setImageURLs(filteredData);
+        setImageURLs(uniqueImageURLs);
       } else {
         throw new Error(
           "Invalid response format or missing 'response' property",
