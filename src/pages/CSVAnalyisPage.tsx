@@ -7,7 +7,7 @@ import { MdAutoGraph } from "react-icons/md";
 import { GiMagicBroom } from "react-icons/gi";
 
 interface Message {
-  text: string;
+  text: any;
   isSender: boolean;
 }
 
@@ -41,7 +41,22 @@ const CSVAnalysisPage: React.FC = () => {
       setHistory((prevHistory) => [
         ...prevHistory,
         { text: currentQuery, isSender: true },
-        { text: serverResponse, isSender: false },
+        ...(isChartEndpoint === false
+          ? [
+              {
+                text:
+                  typeof serverResponse === "object"
+                    ? JSON.stringify(serverResponse, null, 2)
+                    : serverResponse,
+                isSender: false,
+              },
+            ]
+          : [
+              {
+                text: "Graph generation request completed...",
+                isSender: false,
+              },
+            ]),
       ]);
 
       setCurrentQuery("");
