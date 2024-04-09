@@ -24,7 +24,7 @@ const ChatPage: React.FC<ChatPageProps> = (props: ChatPageProps) => {
 
   const sendRequest = (question = currentQuestion) => {
     // Only send request if question is not empty
-    if (!question) return;
+    if (question === null || question.trim() === "") return;
 
     // Make the request to fetch the response
     fetch("http://127.0.0.1:8000/webchat/query/", {

@@ -14,18 +14,46 @@ import logo from "../assets/logo.png";
 const HomePage = () => {
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
   const [webpageURL, setWebpageURL] = useState<string>("");
-  const [transcriptionData, setTranscriptionData] = useState("");
-  const [summaryData, setSummaryData] = useState("");
-  const [chatSummaryText, setChatSummaryText] = useState("");
-  const [imagesURLs, setImageURLs] = useState([]); // Initialize images state
+  const [transcriptionData, setTranscriptionData] = useState(
+    "Please enter a valid YouTube Link",
+  );
+  const [summaryData, setSummaryData] = useState(
+    "Please enter a valid YouTube Link",
+  );
+  const [chatSummaryText, setChatSummaryText] = useState(
+    "Please enter a valid WebPage URL",
+  );
+  const [imagesURLs, setImageURLs] = useState<string[]>([]); // Initialize images state
+  const [imagePageTitle, setImagePageTitle] = useState("Analyse Images");
 
   const handleFeatureClick = (featureLabel: string) => {
     setWebpageURL("");
+    setSummaryData("Please enter a valid YouTube Link");
+    setTranscriptionData("Please enter a valid YouTube Link");
+    setChatSummaryText("Please enter a valid WebPage URL");
+    setImageURLs([]);
+    setImagePageTitle("Analyse Images");
     setSelectedFeature(featureLabel);
   };
 
   const handleURLChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setWebpageURL(event.target.value);
+  };
+
+  const handleEnterKeyPress = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (event.key === "Enter") {
+      // Call sendRequest prop directly
+      if (selectedFeature === "Chat") {
+        setChatSummaryText("Loading Summary...");
+        scrapeAndSummarizeText();
+      } else if (selectedFeature === "Transcribe Video") {
+        setTranscriptionData("Loading Transcription...");
+        setSummaryData("Loading Summary...");
+        fetchTranscriptionData();
+      }
+    }
   };
 
   const fetchTranscriptionData = useCallback(async () => {
@@ -51,8 +79,8 @@ const HomePage = () => {
         const data2 = response2.data;
         setSummaryData(data2.response);
       } catch (error) {
-        setTranscriptionData("Please enter a valid YouTube URL!");
-        setSummaryData("Please enter a valid YouTube URL!");
+        setTranscriptionData("Invalid YouTube Link");
+        setSummaryData("Invalid YouTube Link");
         console.error("Error fetching data:", error);
       }
     }
@@ -109,13 +137,6 @@ const HomePage = () => {
       });
   };
 
-  useEffect(() => {
-    return () => {
-      setSummaryData("");
-      setTranscriptionData("");
-    };
-  }, [webpageURL]);
-
   const fetchImagesFromBackend = async (webpageURL: string) => {
     try {
       const response = await fetch(
@@ -140,17 +161,32 @@ const HomePage = () => {
           (url: string) =>
             url.startsWith("http") && url.match(/\.(jpeg|jpg|png)$/),
         );
+
+        // Filter out duplicate URLs
+        const uniqueImageURLs: string[] = Array.from(new Set(filteredData));
+
         // Update state with fetched images
-        setImageURLs(filteredData);
+        setImageURLs(uniqueImageURLs);
       } else {
         throw new Error(
           "Invalid response format or missing 'response' property",
         );
       }
     } catch (error) {
+      setImagePageTitle("Error Fetching Images...");
       console.error("Error fetching images:", error);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      setChatSummaryText("Please enter a valid WebPage URL");
+      setTranscriptionData("Please enter a valid YouTube Link");
+      setSummaryData("Please enter a valid YouTube Link");
+      setImageURLs([]);
+      setImagePageTitle("Analyse Images");
+    };
+  }, [webpageURL]);
 
   return (
     <div className="flex w-full">
@@ -166,8 +202,10 @@ const HomePage = () => {
               onClick={() => {
                 setSelectedFeature("");
                 setWebpageURL("");
-                setSummaryData("");
-                setTranscriptionData("");
+                setSummaryData("Please enter a valid YouTube Link");
+                setTranscriptionData("Please enter a valid YouTube Link");
+                setChatSummaryText("Please enter a valid WebPage URL");
+                setImageURLs([]);
               }}
               className="flex cursor-pointer items-center justify-center gap-x-2"
             >
@@ -252,13 +290,12 @@ const HomePage = () => {
               }
               value={webpageURL}
               onChange={handleURLChange}
+              onKeyPress={handleEnterKeyPress}
             />
             {/* Arrow Button */}
             {selectedFeature === "Transcribe Video" ? (
               <div
                 onClick={() => {
-                  setTranscriptionData("");
-                  setSummaryData("");
                   fetchTranscriptionData();
                 }}
                 title="Transcribe Video"
@@ -270,6 +307,7 @@ const HomePage = () => {
               <div
                 onClick={() => {
                   scrapeAndSummarizeText();
+                  setChatSummaryText("Loading Summary...");
                 }}
                 title="Summarize and Chat"
                 className={`flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1`}
@@ -279,7 +317,10 @@ const HomePage = () => {
               </div>
             ) : selectedFeature === "Analyse Image" ? (
               <div
-                onClick={() => fetchImagesFromBackend(webpageURL)}
+                onClick={() => {
+                  setImagePageTitle("Loading Images...");
+                  fetchImagesFromBackend(webpageURL);
+                }}
                 title="Analyse Image"
                 className={`flex w-fit cursor-pointer items-center justify-center rounded-lg bg-[#0A5463] px-3 py-1`}
               >
@@ -304,7 +345,12 @@ const HomePage = () => {
       {selectedFeature === "Chat" ? (
         <ChatPage webpageURL={webpageURL} summaryData={chatSummaryText} />
       ) : selectedFeature === "Analyse Image" ? (
-        <AnalyseImagePage webpageURL={webpageURL} imageURLs={imagesURLs} />
+        <AnalyseImagePage
+          webpageURL={webpageURL}
+          title={imagePageTitle}
+          setTitle={setImagePageTitle}
+          imageURLs={imagesURLs}
+        />
       ) : selectedFeature === "CSV Analysis" ? (
         <CSVAnalyisPage />
       ) : selectedFeature === "Transcribe Video" ? (

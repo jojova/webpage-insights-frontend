@@ -13,7 +13,7 @@ const TextBox: React.FC<TextBoxProps> = (props) => {
 
   return (
     <div
-      className={`w-fit max-w-[20rem] rounded-lg px-4 py-2 font-medium text-[#000000] ${
+      className={`w-fit max-w-[30rem] rounded-lg px-4 py-2 font-medium text-[#000000] ${
         props.isSender ? "self-end bg-[#FFFFFF]" : "bg-[#FFF4CB]"
       }`}
     >
